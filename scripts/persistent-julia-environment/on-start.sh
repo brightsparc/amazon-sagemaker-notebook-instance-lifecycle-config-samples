@@ -3,8 +3,12 @@
 set -e
 
 # OVERVIEW
-# This script install julia libraries and kernel
-#
+# This script creates a symbolic link for ~/.julia to be hosted under SageMaker directory
+
+mkdir -p /home/ec2-user/SageMaker/.julia
+ln -s /home/ec2-user/SageMaker/.julia ~/.julia 
+
+# Create a julia file to install jupyter notebook kernel
 
 cat << EOF > /tmp/install_kernel.julia
 # Install package manager
@@ -17,6 +21,8 @@ IJulia.installkernel("Julia nodeps", "--depwarn=no")
 
 # Install any other libraries
 EOF
+
+# This the activates the julia conda enviroment to install Julia and Juypter package
 
 sudo -u ec2-user -i <<'EOF'
 unset SUDO_UID
